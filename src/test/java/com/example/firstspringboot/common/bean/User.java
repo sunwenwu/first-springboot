@@ -12,8 +12,14 @@ public class User {
     private String userName;
     private String pwd;
 
-    public User(String userName, String pwd) {
-        this.userName = userName;
-        this.pwd = pwd;
+    public User(String s, String s1) {
+        this.userName=s;
+        this.pwd=s1;
+    }
+
+
+    public static void main(String[] args) {
+        User u = new User("33","44");
+        System.out.println(u.getPwd()+u.getUserName());
     }
 }

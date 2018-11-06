@@ -31,7 +31,7 @@ public class FanXingTest<T extends Comparable & Serializable> {
 
 
     static void show(InnerFanxingTest2<?> obj){
-        System.out.println(obj.getKey());
+//        System.out.println(obj.getKey());
 
     }
 
