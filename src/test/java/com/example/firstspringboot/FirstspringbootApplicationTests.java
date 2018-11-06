@@ -11,6 +11,8 @@ public class FirstspringbootApplicationTests {
 
     @Test
     public void contextLoads() {
+
+        System.out.println("test = " + test);
     }
 
 }
