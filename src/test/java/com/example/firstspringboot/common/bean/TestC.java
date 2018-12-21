@@ -40,5 +40,8 @@ public class TestC {
 
         System.out.println(String.join(System.lineSeparator(), list));
 
+
+        int i= 1/0;
+
     }
 }
