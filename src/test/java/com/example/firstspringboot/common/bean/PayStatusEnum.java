@@ -3,10 +3,7 @@ package com.example.firstspringboot.common.bean;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * @author pangjianhua
- * @date 2018/8/2 14:11
- */
+
 public enum PayStatusEnum {
     /**
      * 未支付

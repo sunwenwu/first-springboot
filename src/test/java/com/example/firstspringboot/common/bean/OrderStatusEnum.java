@@ -4,12 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * 订单状态枚举
- *
- * @author pangjianhua
- * @date 2018/8/2 10:37
- */
+
 public enum OrderStatusEnum {
     /**
      * 已提交 只有微信在线支付有这个状态
