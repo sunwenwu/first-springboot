@@ -44,7 +44,7 @@ public enum DemoEnum {
 
         for(DemoEnum demoEnum : enumConstants){
 
-            System.out.println(demoEnum.getCode() +" :"+demoEnum.getName());
+            System.out.println(demoEnum.toString()+" "+demoEnum.getCode() +" :"+demoEnum.getName());
         }
         List<String> collect = Arrays.stream(enumConstants).map(demoEnum -> {
             return demoEnum.getCode();

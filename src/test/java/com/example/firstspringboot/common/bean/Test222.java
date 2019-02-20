@@ -20,7 +20,7 @@ public class Test222 {
 
     }
 
-    private static  <T> T convert(String param,Class<T> clazz) {
+    private static  <T> T convert(String param, Class<T> clazz) {
         if (NumberUtils.isCreatable(param)) {
             if(Integer.class.isAssignableFrom(clazz)){
                 return (T) NumberUtils.createInteger(param);

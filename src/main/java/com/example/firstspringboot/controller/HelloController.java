@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.ws.Service;
-
 /**
  * @author: sunwenwu
  * @Date: 2018/10/17 11：44

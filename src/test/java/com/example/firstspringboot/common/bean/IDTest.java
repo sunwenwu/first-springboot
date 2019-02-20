@@ -6,9 +6,6 @@ package com.example.firstspringboot.common.bean;
  * @Description:
  */
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-
 /**
  * Twitter_Snowflake<br>
  * SnowFlake的结构如下(每部分用-分开):<br>

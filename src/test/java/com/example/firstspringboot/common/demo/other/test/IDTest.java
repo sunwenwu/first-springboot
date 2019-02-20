@@ -3,7 +3,6 @@ package com.example.firstspringboot.common.demo.other.test;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.SimpleFormatter;
 
 /**
  * @author: sunwenwu
