@@ -1,7 +1,9 @@
 package com.example.firstspringboot.common.demo.dataStructure;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author: sunwenwu
@@ -43,7 +45,7 @@ public enum FuhaoEnum {
         return null;
     }
 
-    public static List<Character> getSupportFuhaoChar() {
+   /* public static List<Character> getSupportFuhaoChar() {
         List<Character> list = new ArrayList<>();
 
         for (FuhaoEnum value : FuhaoEnum.values()) {
@@ -51,6 +53,21 @@ public enum FuhaoEnum {
         }
 
         return list;
+    }*/
+
+    private static List<Character> supportFuhaoChars = null;
+
+    public static List<Character> getSupportFuhaoChar() {
+        if (supportFuhaoChars == null) {
+            synchronized(FuhaoEnum.class){
+                if (supportFuhaoChars == null) {
+                    supportFuhaoChars = Arrays.stream(FuhaoEnum.class.getEnumConstants()).map(fuhaoEnum -> {
+                        return fuhaoEnum.getZheng();
+                    }).collect(Collectors.toList());
+                }
+            }
+        }
+        return supportFuhaoChars;
     }
 
 
