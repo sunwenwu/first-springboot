@@ -2,6 +2,8 @@ package com.example.firstspringboot.demo;
 
 
 
+
+
 import java.sql.Driver;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -44,6 +46,11 @@ public class MessageFormatTest {
         while(it.hasNext()){
             Driver dd =it.next();
             System.out.println(dd.toString());//oracle.jdbc.OracleDriver@498e2a42
+        }
+
+        Short aa = null;
+        if ((short)1 == aa) {
+      System.out.println("正常");
         }
     }
 }

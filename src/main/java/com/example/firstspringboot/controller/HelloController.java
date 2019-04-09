@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Description:
  */
 @RestController
+@RequestMapping
 public class HelloController {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloController.class);
@@ -38,14 +39,16 @@ public class HelloController {
     @RequestMapping(value = {"/getTao"},method = RequestMethod.GET)
     public Object getTao(){
         logger.info("log test...");
-        return tbCartService.selectByPrimaryKey(4L);
+        return "log test...";
+//        return tbCartService.selectByPrimaryKey(4L);
     }
 
     @ResponseBody
     @RequestMapping(value = {"/getTao1"},method = RequestMethod.GET)
     public Object getTao2(){
         logger.info("log test...");
-        return tbCartMapper.selectByPrimaryKey(5L);
+        return "log test111...";
+//        return tbCartMapper.selectByPrimaryKey(5L);
     }
 
 

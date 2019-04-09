@@ -12,24 +12,25 @@ import java.util.List;
  */
 public class Demo1 {
 
-    public static final char[] chars = "()[]{}".toCharArray();
+    public static final char[] chars = "((((((((([[[[[[[[[[[[[]]]]]]]))))))))".toCharArray();
+//    public static final char[] chars = "()[]{}".toCharArray();
 
     public static final List<Character> newChars = new ArrayList<>();
 
 
     public static void main(String[] args) {
-        //
+
         for (int i=0; i<chars.length;i++) {
             char c = chars[i];
             if (FuhaoEnum.getSupportFuhaoChar().contains(c)) {
                 push(c);
+                System.out.println("push:---------------"+c);
             } else {
                 if (CollectionUtils.isEmpty(newChars)) {
                     throw new RuntimeException("非法！");
                 }
-                char pop = pop();
-
-                if (pop == FuhaoEnum.getFuhaoEnumDescByTypeCode(c)) {
+                System.out.println("pop:---------------"+c);
+                if ( pop() == FuhaoEnum.getFuhaoEnumDescByTypeCode(c)) {
                     del();
                 } else {
                     throw new RuntimeException("非法！");
