@@ -13,7 +13,7 @@ import java.util.*;
  * @Date: 2019/4/23 16：03
  * @Description:
  */
-public class KaOrderTest {
+public class KaOrderTest2 {
 
   /**
    * ka二期 开单： 1、取最新的检查为基准 2、校验开单物料的数量是否足够 3、拆单 3.1 判断物料是否超过 送货上限 ，超过的需要单独拆单 3.2 剩下的物料同一仓别的合并为同一次开单
@@ -42,13 +42,13 @@ public class KaOrderTest {
 
       List<WarehouseProdLimitVO> limitData = getLimitData();
 
-      //统计预开单 不区分仓别物料数据
+      //统计预开单 区分仓别物料数据
       Map<String,Integer> countPreProdMap = new HashMap<>();
 
-      //统计预开单 区分仓别物料数据
+      //统计预开单 区分仓别物料行号数据
       Map<String,Integer> countWarehousePreProdMap = new HashMap<>();
 
-      //将预开单数据 按仓别物料维度 统计(原始)
+      //将预开单数据 按仓别物料行号维度 统计(原始)
       Map<String,PreProductVO> countWarehousePreProdVOMap = new HashMap<>();
 
       //统计送检返回 区分仓别物料数据
@@ -66,48 +66,50 @@ public class KaOrderTest {
 
       preData.forEach(ppv -> {
 
+          String wareProdTypeKey = ppv.getWarehouseType() + ":" + ppv.getProductNo();
+
           //统计物料维度的数量
-          Integer prodNum = countPreProdMap.get(ppv.getProductNo());
+          Integer prodNum = countPreProdMap.get(wareProdTypeKey);
 
           if (prodNum == null) {
-              countPreProdMap.put(ppv.getProductNo(),ppv.getProdNum());
+              countPreProdMap.put(wareProdTypeKey,ppv.getProdNum());
           } else {
-              countPreProdMap.put(ppv.getProductNo(),ppv.getProdNum() + prodNum);
+              countPreProdMap.put(wareProdTypeKey,ppv.getProdNum() + prodNum);
           }
 
 
           //统计仓库维度每种物料的数量
-          String wareProdTypeKey = ppv.getWarehouseType() + "_" + ppv.getProductNo();
+          String wareProdTypeLineKey = ppv.getWarehouseType() + ":" + ppv.getProductNo() + ":"+ppv.getOrderLineNo();
 
-          Integer warehouseProdNum = countPreProdMap.get(wareProdTypeKey);
+          Integer warehouseProdNum = countPreProdMap.get(wareProdTypeLineKey);
 
           if (warehouseProdNum == null) {
-              countWarehousePreProdMap.put(wareProdTypeKey,ppv.getProdNum());
+              countWarehousePreProdMap.put(wareProdTypeLineKey,ppv.getProdNum());
           } else {
-              countWarehousePreProdMap.put(wareProdTypeKey,ppv.getProdNum() + warehouseProdNum);
+              countWarehousePreProdMap.put(wareProdTypeLineKey,ppv.getProdNum() + warehouseProdNum);
           }
 
-          countWarehousePreProdVOMap.put(wareProdTypeKey,ppv);
+          countWarehousePreProdVOMap.put(wareProdTypeLineKey,ppv);
 
       });
 
       checkData.forEach( cd -> {
           //统计仓库维度每种物料的数量
-          String wareProdTypeKey = cd.getWarehouseType() + "_" + cd.getProductNo();
+          String wareProdTypeLineKey = cd.getWarehouseType() + ":" + cd.getProductNo() + ":"+cd.getOrderLineNo();
 
-          Integer warehouseProdNum = countCheckWarehousePreProdMap.get(wareProdTypeKey);
+          Integer warehouseProdNum = countCheckWarehousePreProdMap.get(wareProdTypeLineKey);
 
           if (warehouseProdNum == null) {
-              countCheckWarehousePreProdMap.put(wareProdTypeKey,cd.getInvNum());
+              countCheckWarehousePreProdMap.put(wareProdTypeLineKey,cd.getInvNum());
           } else {
-              countCheckWarehousePreProdMap.put(wareProdTypeKey,cd.getInvNum() + warehouseProdNum);
+              countCheckWarehousePreProdMap.put(wareProdTypeLineKey,cd.getInvNum() + warehouseProdNum);
           }
       });
 
 
       limitData.forEach( cd -> {
           //统计仓库维度每种物料的送货上下限数量
-          String wareProdTypeKey = cd.getWarehouseType() + "_" + cd.getProductNo();
+          String wareProdTypeKey = cd.getWarehouseType() + ":" + cd.getProductNo();
 
           countLimitWarehousePreProdMap.put(wareProdTypeKey,cd);
       });
@@ -120,8 +122,14 @@ public class KaOrderTest {
 
       for (Map.Entry<String, Integer> preProdentry :entries) {
           Integer preNum = preProdentry.getValue();//预开单物料数量
+
+          Integer allPreNum = countPreProdMap.get(preProdentry.getKey().substring(0, preProdentry.getKey().lastIndexOf(":")));
+          if (allPreNum > preNum) {
+              preNum = allPreNum;
+          }
+
           Integer checkNum = countCheckWarehousePreProdMap.get(preProdentry.getKey());
-          WarehouseProdLimitVO warehouseProdLimitVO = countLimitWarehousePreProdMap.get(preProdentry.getKey());
+          WarehouseProdLimitVO warehouseProdLimitVO = countLimitWarehousePreProdMap.get(preProdentry.getKey().substring(0,preProdentry.getKey().lastIndexOf(":")));
 
           if (preNum <= 0) {
               throw new RuntimeException(MessageFormat.format("开单物料数量不能为0：{0}",preProdentry.getKey()));
@@ -140,12 +148,13 @@ public class KaOrderTest {
                   throw new RuntimeException(MessageFormat.format("开单物料数量最小起送量：{0},当前数量：{1}",warehouseProdLimitVO.getMinNum(),preNum));
               }
               if (warehouseProdLimitVO.getMaxNum() != null && preNum > warehouseProdLimitVO.getMaxNum()) {
-                  String[] keys = preProdentry.getKey().split("_");
+                  String[] keys = preProdentry.getKey().split(":");
                   NeedSingleOpenOrderProdVO openOrderProdVO = new NeedSingleOpenOrderProdVO();
                   openOrderProdVO.setOpenTimes(preNum / warehouseProdLimitVO.getMaxNum());
                   openOrderProdVO.setSurplusNum(preNum % warehouseProdLimitVO.getMaxNum());
                   openOrderProdVO.setWarehouseType(keys[0]);
                   openOrderProdVO.setProductNo(keys[1]);
+                  openOrderProdVO.setOrderLineNo(keys[2]);
                   openOrderProdVO.setMaxNum(warehouseProdLimitVO.getMaxNum());
                   needSplitOrderPrudMap.put(preProdentry.getKey(),openOrderProdVO);
               }
@@ -249,10 +258,26 @@ public class KaOrderTest {
         vo3.setProductNo("P_B1111");
         vo3.setWarehouseType("乙");
 
+        PreProductVO vo4 = new PreProductVO();
+        vo4.setOrderNo("D1111");
+        vo4.setOrderLineNo("L66");
+        vo4.setProdNum(11);
+        vo4.setProductNo("P_B1111");
+        vo4.setWarehouseType("甲");
+
+        PreProductVO vo5 = new PreProductVO();
+        vo5.setOrderNo("D1111");
+        vo5.setOrderLineNo("L66");
+        vo5.setProdNum(30);
+        vo5.setProductNo("P_B1111");
+        vo5.setWarehouseType("乙");
+
         List<PreProductVO> preData = new ArrayList<>();
         preData.add(vo);
         preData.add(vo2);
         preData.add(vo3);
+        preData.add(vo4);
+        preData.add(vo5);
 
         return preData;
     }
@@ -274,14 +299,28 @@ public class KaOrderTest {
 
         CheckProductVO vo3 = new CheckProductVO();
         vo3.setOrderLineNo("L2");
-        vo3.setInvNum(30);
+        vo3.setInvNum(60);
         vo3.setProductNo("P_B1111");
         vo3.setWarehouseType("乙");
+
+        CheckProductVO vo4 = new CheckProductVO();
+        vo4.setOrderLineNo("L66");
+        vo4.setInvNum(50);
+        vo4.setProductNo("P_B1111");
+        vo4.setWarehouseType("甲");
+
+        CheckProductVO vo5 = new CheckProductVO();
+        vo5.setOrderLineNo("L66");
+        vo5.setInvNum(60);
+        vo5.setProductNo("P_B1111");
+        vo5.setWarehouseType("乙");
 
         List<CheckProductVO> preData = new ArrayList<>();
         preData.add(vo);
         preData.add(vo2);
         preData.add(vo3);
+        preData.add(vo4);
+        preData.add(vo5);
 
         return preData;
     }
@@ -299,7 +338,7 @@ public class KaOrderTest {
         vo2.setProductNo("P_B1111");
         vo2.setWarehouseType("甲");
         vo2.setMinNum(0);
-        vo2.setMaxNum(2);
+        vo2.setMaxNum(20);
 
         WarehouseProdLimitVO vo3 = new WarehouseProdLimitVO();
 
@@ -413,6 +452,9 @@ public class KaOrderTest {
 
         //物料编码
         private String productNo;
+
+        //订单行号
+        private String orderLineNo;
 
         //开几次
         private Integer openTimes;
