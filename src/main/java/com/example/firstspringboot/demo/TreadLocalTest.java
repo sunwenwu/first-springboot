@@ -26,8 +26,6 @@ public class TreadLocalTest {
         threadLocalfu.set(new Demo("父",10));
 
 
-
-
         Field field = TreadLocalTest.class.getDeclaredField("threadLocalfu");
         field.setAccessible(true);
         ThreadLocal o =(ThreadLocal) field.get(new TreadLocalTest());
