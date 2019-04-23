@@ -466,7 +466,7 @@ public class KaOrderTest2 {
     }
 
     public static String getOpenOrderNo(){
-        return "OON_"+System.currentTimeMillis();
+        return "OON_"+System.currentTimeMillis()+new Random().nextInt(10000);
     }
 
 }
