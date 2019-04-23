@@ -123,10 +123,8 @@ public class KaOrderTest2 {
       for (Map.Entry<String, Integer> preProdentry :entries) {
           Integer preNum = preProdentry.getValue();//预开单物料数量
 
+
           Integer allPreNum = countPreProdMap.get(preProdentry.getKey().substring(0, preProdentry.getKey().lastIndexOf(":")));
-          if (allPreNum > preNum) {
-              preNum = allPreNum;
-          }
 
           Integer checkNum = countCheckWarehousePreProdMap.get(preProdentry.getKey());
           WarehouseProdLimitVO warehouseProdLimitVO = countLimitWarehousePreProdMap.get(preProdentry.getKey().substring(0,preProdentry.getKey().lastIndexOf(":")));
@@ -139,7 +137,7 @@ public class KaOrderTest2 {
               throw new RuntimeException(MessageFormat.format("该仓别物料没有对应的送检数据：{0}",preProdentry.getKey()));
           }
 
-          if (preNum > checkNum) {
+          if ((allPreNum > preNum ? allPreNum : preNum) > checkNum) {
               throw new RuntimeException(MessageFormat.format("该仓别物料库存不足：{0},需要开单数：{1}，剩余数：{2}",preProdentry.getKey(),preNum,checkNum));
           }
 
@@ -338,7 +336,7 @@ public class KaOrderTest2 {
         vo2.setProductNo("P_B1111");
         vo2.setWarehouseType("甲");
         vo2.setMinNum(0);
-        vo2.setMaxNum(20);
+        vo2.setMaxNum(10);
 
         WarehouseProdLimitVO vo3 = new WarehouseProdLimitVO();
 
