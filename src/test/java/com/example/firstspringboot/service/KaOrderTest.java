@@ -1,17 +1,16 @@
 package com.example.firstspringboot.service;
 
 import com.example.firstspringboot.common.JsonUtil;
-import lombok.Data;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
-
+import com.example.firstspringboot.service.vo.*;
 import java.text.MessageFormat;
 import java.util.*;
 
 /**
  * @author: sunwenwu
  * @Date: 2019/4/23 16：03
- * @Description:
+ * @Description: 不支持同一物料不同行号
  */
 public class KaOrderTest {
 
@@ -35,12 +34,12 @@ public class KaOrderTest {
   public static void main(String[] args) {
 
       //准备开单的数据
-      List<PreProductVO> preData = getPreData();
+      List<PreProductVO> preData = DataUtils.getPreData();
 
       //检查的数据
-      List<CheckProductVO> checkData = getCheckData();
+      List<CheckProductVO> checkData = DataUtils.getCheckData();
 
-      List<WarehouseProdLimitVO> limitData = getLimitData();
+      List<WarehouseProdLimitVO> limitData = DataUtils.getLimitData();
 
       //统计预开单 不区分仓别物料数据
       Map<String,Integer> countPreProdMap = new HashMap<>();
@@ -79,7 +78,7 @@ public class KaOrderTest {
           //统计仓库维度每种物料的数量
           String wareProdTypeKey = ppv.getWarehouseType() + "_" + ppv.getProductNo();
 
-          Integer warehouseProdNum = countPreProdMap.get(wareProdTypeKey);
+          Integer warehouseProdNum = countWarehousePreProdMap.get(wareProdTypeKey);
 
           if (warehouseProdNum == null) {
               countWarehousePreProdMap.put(wareProdTypeKey,ppv.getProdNum());
@@ -163,7 +162,7 @@ public class KaOrderTest {
 
               for (int i =1 ;i <= singleOpenOrderProdVO.getOpenTimes() ; i++) {
                   OrderVO openOrder = new OrderVO();
-                  openOrder.setOpenOrderNo(getOpenOrderNo());
+                  openOrder.setOpenOrderNo(DataUtils.getOpenOrderNo());
 
                   OrderVOItem orderVOItem = new OrderVOItem();
                   BeanUtils.copyProperties(preProductVO,orderVOItem);
@@ -207,7 +206,7 @@ public class KaOrderTest {
           if (!countWarehouseMap.isEmpty()) {
               for (Map.Entry<String, List<PreProductVO>> preProdentry : countWarehouseMap.entrySet()) {
                   OrderVO openOrder = new OrderVO();
-                  openOrder.setOpenOrderNo(getOpenOrderNo());
+                  openOrder.setOpenOrderNo(DataUtils.getOpenOrderNo());
 
                   List<OrderVOItem> orderVOItems = new ArrayList<>();
 
@@ -224,209 +223,6 @@ public class KaOrderTest {
       }
 
 
-      System.out.println("开单数据：---->"+ JsonUtil.toJSONString(openOrderData));
+      System.out.println("开单数据【不支持】：---->"+ JsonUtil.toJSONString(openOrderData));
   }
-
-    private static List<PreProductVO> getPreData() {
-        PreProductVO vo = new PreProductVO();
-        vo.setOrderNo("D1111");
-        vo.setOrderLineNo("L1");
-        vo.setProdNum(10);
-        vo.setProductNo("P_A1111");
-        vo.setWarehouseType("甲");
-
-        PreProductVO vo2 = new PreProductVO();
-        vo2.setOrderNo("D1111");
-        vo2.setOrderLineNo("L2");
-        vo2.setProdNum(11);
-        vo2.setProductNo("P_B1111");
-        vo2.setWarehouseType("甲");
-
-        PreProductVO vo3 = new PreProductVO();
-        vo3.setOrderNo("D1111");
-        vo3.setOrderLineNo("L2");
-        vo3.setProdNum(30);
-        vo3.setProductNo("P_B1111");
-        vo3.setWarehouseType("乙");
-
-        List<PreProductVO> preData = new ArrayList<>();
-        preData.add(vo);
-        preData.add(vo2);
-        preData.add(vo3);
-
-        return preData;
-    }
-
-
-    private static List<CheckProductVO> getCheckData() {
-        CheckProductVO vo = new CheckProductVO();
-
-        vo.setOrderLineNo("L1");
-        vo.setInvNum(10);
-        vo.setProductNo("P_A1111");
-        vo.setWarehouseType("甲");
-
-        CheckProductVO vo2 = new CheckProductVO();
-        vo2.setOrderLineNo("L2");
-        vo2.setInvNum(50);
-        vo2.setProductNo("P_B1111");
-        vo2.setWarehouseType("甲");
-
-        CheckProductVO vo3 = new CheckProductVO();
-        vo3.setOrderLineNo("L2");
-        vo3.setInvNum(30);
-        vo3.setProductNo("P_B1111");
-        vo3.setWarehouseType("乙");
-
-        List<CheckProductVO> preData = new ArrayList<>();
-        preData.add(vo);
-        preData.add(vo2);
-        preData.add(vo3);
-
-        return preData;
-    }
-
-    private static List<WarehouseProdLimitVO> getLimitData() {
-        WarehouseProdLimitVO vo = new WarehouseProdLimitVO();
-
-        vo.setProductNo("P_A1111");
-        vo.setWarehouseType("甲");
-        vo.setMinNum(0);
-        vo.setMaxNum(100);
-
-        WarehouseProdLimitVO vo2 = new WarehouseProdLimitVO();
-
-        vo2.setProductNo("P_B1111");
-        vo2.setWarehouseType("甲");
-        vo2.setMinNum(0);
-        vo2.setMaxNum(2);
-
-        WarehouseProdLimitVO vo3 = new WarehouseProdLimitVO();
-
-        vo3.setProductNo("P_B1111");
-        vo3.setWarehouseType("乙");
-        vo3.setMinNum(0);
-        vo3.setMaxNum(100);
-
-        List<WarehouseProdLimitVO> preData = new ArrayList<>();
-        preData.add(vo);
-        preData.add(vo2);
-        preData.add(vo3);
-
-        return preData;
-    }
-
-
-
-    @Data
-    static class OrderVO {
-
-      //开单号
-      private String openOrderNo;
-
-      private List<OrderVOItem> orderVOItems;
-
-    }
-
-    @Data
-    static class OrderVOItem {
-
-        //订单号
-        private String orderNo;
-
-        //订单行号
-        private String orderLineNo;
-
-        //物料编码
-        private String productNo;
-
-        //物料数量
-        private Integer prodNum;
-
-        //仓别
-        private String warehouseType;
-    }
-
-    /**
-     * 预开单数据
-     */
-    @Data
-    static class PreProductVO {
-
-        //订单号
-        private String orderNo;
-
-        //订单行号
-        private String orderLineNo;
-
-        //物料编码
-        private String productNo;
-
-        //物料数量
-        private Integer prodNum;
-
-        //仓别
-        private String warehouseType;
-    }
-
-    /**
-     * 检查数据
-     */
-    @Data
-    static class CheckProductVO {
-
-        //送检号
-        private String checkNo;
-
-        //订单行号
-        private String orderLineNo;
-
-        //物料编码
-        private String productNo;
-
-        //库存数量
-        private Integer invNum;
-
-        //仓别
-        private String warehouseType;
-    }
-
-    @Data
-    static class WarehouseProdLimitVO {
-        //仓别
-        private String warehouseType;
-
-        //物料编码
-        private String productNo;
-
-        //物料最小数量
-        private Integer minNum;
-
-        //物料最大数量
-        private Integer maxNum;
-    }
-
-    @Data
-    static class NeedSingleOpenOrderProdVO {
-        //仓别
-        private String warehouseType;
-
-        //物料编码
-        private String productNo;
-
-        //开几次
-        private Integer openTimes;
-
-        //物料剩余数量
-        private Integer surplusNum;
-
-        //物料最大数量
-        private Integer maxNum;
-
-    }
-
-    public static String getOpenOrderNo(){
-        return "OON_"+System.currentTimeMillis();
-    }
-
 }
