@@ -1,5 +1,6 @@
 package com.example.firstspringboot.common.bean;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import lombok.Data;
 
 /**
@@ -9,7 +10,9 @@ import lombok.Data;
  */
 @Data
 public class User {
+    @Excel(name = "用户名")
     private String userName;
+    @Excel(name = "密码")
     private String pwd;
 
     public User(String s, String s1) {

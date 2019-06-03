@@ -26,7 +26,7 @@ public class DataUtils {
         PreProductVO vo2 = new PreProductVO();
         vo2.setOrderNo("D1111");
         vo2.setOrderLineNo("L2");
-        vo2.setProdNum(11);
+        vo2.setProdNum(25);
         vo2.setProductNo("P_B1111");
         vo2.setWarehouseType("甲");
 
@@ -37,10 +37,18 @@ public class DataUtils {
         vo3.setProductNo("P_B1111");
         vo3.setWarehouseType("乙");
 
+
+
+        List<PreProductVO> preData = new ArrayList<>();
+        preData.add(vo);
+        preData.add(vo2);
+        preData.add(vo3);
+
+
         PreProductVO vo4 = new PreProductVO();
         vo4.setOrderNo("D1111");
         vo4.setOrderLineNo("L66");
-        vo4.setProdNum(11);
+        vo4.setProdNum(25);
         vo4.setProductNo("P_B1111");
         vo4.setWarehouseType("甲");
 
@@ -50,11 +58,6 @@ public class DataUtils {
         vo5.setProdNum(30);
         vo5.setProductNo("P_B1111");
         vo5.setWarehouseType("乙");
-
-        List<PreProductVO> preData = new ArrayList<>();
-        preData.add(vo);
-        preData.add(vo2);
-        preData.add(vo3);
         preData.add(vo4);
         preData.add(vo5);
 
@@ -63,6 +66,9 @@ public class DataUtils {
 
 
     public static List<CheckProductVO> getCheckData() {
+
+        List<CheckProductVO> preData = new ArrayList<>();
+
         CheckProductVO vo = new CheckProductVO();
 
         vo.setOrderLineNo("L1");
@@ -82,6 +88,10 @@ public class DataUtils {
         vo3.setProductNo("P_B1111");
         vo3.setWarehouseType("乙");
 
+        preData.add(vo);
+        preData.add(vo2);
+        preData.add(vo3);
+
         CheckProductVO vo4 = new CheckProductVO();
         vo4.setOrderLineNo("L66");
         vo4.setInvNum(50);
@@ -93,11 +103,6 @@ public class DataUtils {
         vo5.setInvNum(60);
         vo5.setProductNo("P_B1111");
         vo5.setWarehouseType("乙");
-
-        List<CheckProductVO> preData = new ArrayList<>();
-        preData.add(vo);
-        preData.add(vo2);
-        preData.add(vo3);
         preData.add(vo4);
         preData.add(vo5);
 
@@ -110,21 +115,21 @@ public class DataUtils {
         vo.setProductNo("P_A1111");
         vo.setWarehouseType("甲");
         vo.setMinNum(0);
-        vo.setMaxNum(100);
+        vo.setMaxNum(20);
 
         WarehouseProdLimitVO vo2 = new WarehouseProdLimitVO();
 
         vo2.setProductNo("P_B1111");
         vo2.setWarehouseType("甲");
         vo2.setMinNum(0);
-        vo2.setMaxNum(8);
+        vo2.setMaxNum(20);
 
         WarehouseProdLimitVO vo3 = new WarehouseProdLimitVO();
 
         vo3.setProductNo("P_B1111");
         vo3.setWarehouseType("乙");
         vo3.setMinNum(0);
-        vo3.setMaxNum(25);
+        vo3.setMaxNum(100);
 
         List<WarehouseProdLimitVO> preData = new ArrayList<>();
         preData.add(vo);
