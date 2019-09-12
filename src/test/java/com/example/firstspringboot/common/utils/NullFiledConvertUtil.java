@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author: sunwenwu
@@ -44,7 +45,7 @@ public class NullFiledConvertUtil {
         }
     }
 
-    public static <T> Map<String,String> convertObj2Map(T t){
+   /* public static <T> Map<String,String> convertObj2Map(T t){
         Field[] fields = t.getClass().getDeclaredFields();
 
         Map<String,String> paramMap = new HashMap<>();
@@ -64,21 +65,98 @@ public class NullFiledConvertUtil {
                     } catch (Exception e) {
                         logger.error("数据转换异常",e);
                     }
+                } else if (Long.class.isAssignableFrom(field.getType())) {
+                    try {
+                        Object o = field.get(t);
+                        if (o == null) {
+                            continue;
+                        }
+
+                        paramMap.put(annotation.mapKey(),AmountUtils.changeF2Y((Long)o));
+                    } catch (Exception e) {
+                        logger.error("数据转换异常",e);
+                    }
+                }
+            }
+        }
+        return paramMap;
+    }*/
+
+    public static <T> Map<String,String> convertObj2Map(T t){
+        return convertObj2MapWithSon(t,false);
+    }
+
+    public static <T> Map<String,String> convertObj2MapWithSon(T t,boolean dealSonFiledType){
+        Field[] fields = t.getClass().getDeclaredFields();
+
+        Map<String,String> paramMap = new HashMap<>();
+        for (Field field:fields) {
+            ConvertAnnotation annotation = field.getAnnotation(ConvertAnnotation.class);
+
+            if (annotation != null && annotation.isSonFiled() == dealSonFiledType) {
+
+                field.setAccessible(true);
+
+                if (String.class.isAssignableFrom(field.getType())) {
+                    try {
+                        Object o = field.get(t);
+                        if (o == null || StringUtils.isEmpty((String)o)) {
+                            continue;
+                        }
+                        paramMap.put(annotation.mapKey(),(String)o);
+                    } catch (Exception e) {
+                        logger.error("数据转换异常",e);
+                    }
+                } else if (Long.class.isAssignableFrom(field.getType())) {
+                    try {
+                        Object o = field.get(t);
+                        if (o == null) {
+                            continue;
+                        }
+
+                        if (annotation.isFen2Yuan()) {
+                            paramMap.put(annotation.mapKey(),AmountUtils.changeF2Y((Long)o));
+                        } else {
+                            paramMap.put(annotation.mapKey(),((Long)o).toString());
+                        }
+                    } catch (Exception e) {
+                        logger.error("数据转换异常",e);
+                    }
                 }
             }
         }
         return paramMap;
     }
 
+
+
+
     public static void main(String[] args) {
 
         CovertDemo covertDemo = new CovertDemo();
         covertDemo.setName("试试");
         covertDemo.setAddress("地址hhhh");
+        covertDemo.setMoney(100011L);
+        covertDemo.setAihao("rap和篮球");
+        covertDemo.setShengao(178L);
+        covertDemo.setTizhong(66L);
 
         Map<String, String> stringStringMap = convertObj2Map(covertDemo);
 
+        Map<String, String> sonMap = convertObj2MapWithSon(covertDemo,true);
+
         System.out.println(JSONObject.toJSONString(stringStringMap));
+        System.out.println(JSONObject.toJSONString(sonMap));
+
+
+        for (int i=0;i<10;i++) {
+            String s = UUID.randomUUID().toString().replace("-", "");
+
+            System.out.println(s +"      :"+s.length());
+        }
 
     }
+
+
+
 }

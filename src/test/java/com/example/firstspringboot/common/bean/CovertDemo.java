@@ -16,4 +16,16 @@ public class CovertDemo {
 
     @ConvertAnnotation(mapKey = "address_test")
     private String address;
+
+    @ConvertAnnotation(mapKey = "money_fen",isFen2Yuan = true)
+    private Long money;
+
+    @ConvertAnnotation(mapKey = "aihao",isSonFiled = true)
+    private String aihao;
+
+    @ConvertAnnotation(mapKey = "shengaooo",isSonFiled = true,isFen2Yuan = true)
+    private Long shengao;
+
+    @ConvertAnnotation(mapKey = "tizhong",isSonFiled = true)
+    private Long tizhong;
 }

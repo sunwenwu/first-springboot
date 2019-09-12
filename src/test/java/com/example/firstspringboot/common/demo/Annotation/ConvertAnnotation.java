@@ -8,4 +8,8 @@ import java.lang.annotation.*;
 public @interface ConvertAnnotation {
 
     String mapKey();
+
+    boolean isFen2Yuan() default false;
+
+    boolean isSonFiled() default false;
 }
