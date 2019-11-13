@@ -2,6 +2,7 @@ package com.example.firstspringboot.common.bean;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.firstspringboot.common.demo.Annotation.ExceptioFiledAannotation;
+import com.example.firstspringboot.common.utils.NullFiledConvertUtil;
 import lombok.Data;
 
 /**
@@ -30,10 +31,17 @@ public class AannotationBeanDemo {
         String s = JSONObject.toJSONString(demo);
 
         System.out.println(s);
+/*
 
 
         AannotationBeanDemo demo2 = JSONObject.parseObject(s.replace("userName", "sex"), AannotationBeanDemo.class);
 
         System.out.println(JSONObject.toJSONString(demo2));
+
+*/
+
+        NullFiledConvertUtil.convert(demo);
+
+        System.out.println(demo);
     }
 }
