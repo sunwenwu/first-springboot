@@ -6,6 +6,11 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 /**
  * @Author :sunwenwu
  * @Date : 2019/11/1 18:31
@@ -23,7 +28,7 @@ public class ValidDemoBeanSon extends ValidDemoBean{
 
 
     public static void main(String[] args) {
-        ValidDemoBeanSon validDemoBeanSon = new ValidDemoBeanSon();
+        /*ValidDemoBeanSon validDemoBeanSon = new ValidDemoBeanSon();
 
         validDemoBeanSon.setNum(1L);
         validDemoBeanSon.setSon("son");
@@ -42,7 +47,11 @@ public class ValidDemoBeanSon extends ValidDemoBean{
         validDemoBeanSon.setSon("son");
         System.out.println("第四次校验:"+ValidataUtil.validate(validDemoBeanSon));
 
+*/
 
+        System.out.println(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+
+        System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
 
 
     }

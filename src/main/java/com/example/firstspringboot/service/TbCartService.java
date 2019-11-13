@@ -1,6 +1,10 @@
 package com.example.firstspringboot.service;
 
+import com.example.firstspringboot.common.vo.ParamVO;
+import com.example.firstspringboot.common.vo.ResultVO;
 import com.example.firstspringboot.common.vo.TbCart;
+
+import java.util.List;
 
 /**
  * @author liuchj
@@ -11,5 +15,7 @@ public interface TbCartService {
 
     TbCart selectByPrimaryKey(Long id);
 
+    ResultVO getResultData(ParamVO paramVO);
 
+    List<ResultVO> getResultDatas(ParamVO paramVO);
 }
