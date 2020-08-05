@@ -2,6 +2,8 @@ server:
   port: 8080
   servlet:
     context-path: /
+  tomcat:
+    max-connections:
 
 spring:
   profiles:
