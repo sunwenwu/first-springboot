@@ -20,7 +20,7 @@ import java.io.IOException;
 
 @SpringBootApplication
 //@Import({DemoConfig.class, DemoSpringInitOkListenerEvent.class})
-@MapperScan(value = "com.example.firstspringboot.dao")
+//@MapperScan(value = "com.example.firstspringboot.dao")
 public class FirstspringbootApplication {
 
     public static void main(String[] args) {

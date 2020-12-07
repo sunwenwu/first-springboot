@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.text.Collator;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,8 @@ public class SortBean implements Comparable<SortBean> {
 
     private final Collator chinaSortUtil =  Collator.getInstance(Locale.CHINA);
 
+    private Long id;
+
     private String name;
 
     private BigDecimal balance;
@@ -28,6 +31,24 @@ public class SortBean implements Comparable<SortBean> {
 
     //Y  置顶  N 非置顶
     private String topLogo;
+
+    private LocalDateTime dateTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
 
     public String getName() {
         return name;
@@ -88,6 +109,12 @@ public class SortBean implements Comparable<SortBean> {
             return chinaSort * -1;
         }
 
+        int date = this.getDateTime().compareTo(o.getDateTime());
+
+        if (date != 0) {
+            return date;
+        }
+
         return 0;
     }
 
@@ -105,22 +132,34 @@ public class SortBean implements Comparable<SortBean> {
 
 
     public static void main(String[] args) {
-
+        LocalDateTime now = LocalDateTime.now();
 
         SortBean s1 = new SortBean();
+        s1.setId(1L);
         s1.setBalance(new BigDecimal("100"));
         s1.setName("上海");
         s1.setUseTimes(10);
         s1.setTopLogo("Y");
+        s1.setDateTime(now.plusMinutes(1));
 
         SortBean s2 = new SortBean();
+        s2.setId(2L);
         s2.setBalance(new BigDecimal("200"));
         s2.setName("成都");
         s2.setUseTimes(21);
         s2.setTopLogo("N");
+        s2.setDateTime(now.plusMinutes(2));
 
 
-        List<SortBean> sortBeans = Arrays.asList(s1, s2);
+        SortBean s3 = new SortBean();
+        s3.setId(3L);
+        s3.setBalance(new BigDecimal("100"));
+        s3.setName("上海");
+        s3.setUseTimes(10);
+        s3.setTopLogo("Y");
+        s3.setDateTime(now.plusMinutes(2));
+
+        List<SortBean> sortBeans = Arrays.asList(s1, s2,s3);
 
 
         System.out.println("排序前：======"+JSON.toJSONString(sortBeans));

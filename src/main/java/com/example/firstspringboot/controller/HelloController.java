@@ -22,7 +22,7 @@ import java.util.Map;
  * @Date: 2018/10/17 11：44
  * @Description:
  */
-@RestController
+//@RestController
 @RequestMapping
 public class HelloController {
 
