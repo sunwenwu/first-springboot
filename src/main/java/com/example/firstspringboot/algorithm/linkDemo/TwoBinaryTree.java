@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * @Author :sunwenwu
  * @Date : 2020/12/9 10:26
- * @Description :二叉树：先、中、后序排列
+ * @Description :二叉树：先、中、后序排列-递归实现
  */
 public class TwoBinaryTree {
 
