@@ -54,7 +54,9 @@ public class HttpClientUtilaa {
     static {
         SSLContext sslContext = null;
         try {
-            sslContext = SSLContext.getInstance("SSLv3");
+//            sslContext = SSLContext.getInstance("TLSv1.1");
+//            sslContext = SSLContext.getInstance("SSL");
+            sslContext = SSLContext.getInstance("TLS");
 
             sslContext.init(null,null,null);
 //            sslContext = SSLContext.getDefault();
@@ -64,15 +66,12 @@ public class HttpClientUtilaa {
         } catch (Exception e){
 
         }
-
         SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,
                 NoopHostnameVerifier.INSTANCE);
 /*
-
         SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,new String[]{"TLSv1.1"},
                 null,
-                NoopHostnameVerifier.INSTANCE);
-*/
+                NoopHostnameVerifier.INSTANCE);*/
 
         Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
                 .register("http", new PlainConnectionSocketFactory())
@@ -107,7 +106,8 @@ public class HttpClientUtilaa {
 
     public static void main(String[] args) {
 
-        doGet("https://www.baidu.com");
+        doGet("https://suisuijiang.com/");
+//        doGet("https://www.baidu.com");
     }
 
   /*  public static void main(String[] args) throws Exception{
