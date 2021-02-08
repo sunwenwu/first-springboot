@@ -66,19 +66,17 @@ public class HttpClientUtilaa {
         } catch (Exception e){
 
         }
-        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,
-                NoopHostnameVerifier.INSTANCE);
-/*
-        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,new String[]{"TLSv1.1"},
+        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(SSLContexts.createDefault());
+     /*   SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,new String[]{"TLSv1.1"},
                 null,
                 NoopHostnameVerifier.INSTANCE);*/
 
-        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+        /*Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
                 .register("http", new PlainConnectionSocketFactory())
                 .register("https", sslsf)
-                .build();
+                .build();*/
 
-        PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
+        PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
         // 最大连接数
         cm.setMaxTotal(200);
         // 每条路由最大连接数
@@ -97,7 +95,7 @@ public class HttpClientUtilaa {
                 .setSSLSocketFactory(sslsf)
                 .setKeepAliveStrategy((httpResponse, httpContext) -> {
                     //长连接最大存活时间
-                    return 10 * 1000;
+                    return 101 * 1000;
                 })
                 .build();
 
@@ -106,8 +104,20 @@ public class HttpClientUtilaa {
 
     public static void main(String[] args) {
 
-        doGet("https://suisuijiang.com/");
-//        doGet("https://www.baidu.com");
+//        doGet("https://suisuijiang.com/");
+//        doGet("https://fiora.suisuijiang.com/");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        doGet("https://miniprogramuat.crm.mcdonalds.com.cn:8092");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+       /* doGet("https://fsp.yillionbank.com");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        doGet("https://m-zbank-acct.cibfintech.com/");*/
     }
 
   /*  public static void main(String[] args) throws Exception{
