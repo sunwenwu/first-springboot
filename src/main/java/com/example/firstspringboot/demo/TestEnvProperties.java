@@ -57,10 +57,20 @@ public class TestEnvProperties {
         MyTestFI mmff = (ss)-> runStr(ss);
         mmff.addStr("mmff");
 
+        MyTestFI mmff5555 = ss-> {
+            ss.substring(0,3);
+        };
+
+
+        mmff.addStr("mmff");
+
         MyTestFI2 mmff22 = (ss,bb)-> runStr(ss);
         mmff22.addStr("sss","sss22");
 
-        MyTestFI2 mmff33 = (ss,bb)-> runStr(bb);
+        MyTestFI2 mmff33 = (ss,bb)-> {
+            runStr(bb);
+            ss.toString();
+        };
         mmff33.addStr("sss","sss22");
 
         //参数个数和类型一样就 直接 this::runStr
