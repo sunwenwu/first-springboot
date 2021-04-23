@@ -29,7 +29,7 @@
             <appender-ref ref="console"/>
             <appender-ref ref="async_log"/>
         </root>
-        <logger name="com.example.firstspringboot" level="debug" additivity="false">
+        <logger name="com.example.firstspringboot" level="info" additivity="false">
             <appender-ref ref="console"/>
             <appender-ref ref="async_log"/>
         </logger>

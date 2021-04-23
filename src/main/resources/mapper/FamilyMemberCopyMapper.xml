@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.firstspringboot.dao.FamilyMemberCopyMapper">
+  <resultMap id="BaseResultMap" type="com.example.firstspringboot.common.vo.FamilyMemberCopy">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="family_id" jdbcType="VARCHAR" property="familyId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="join_status" jdbcType="VARCHAR" property="joinStatus" />
+    <result column="owner" jdbcType="VARCHAR" property="owner" />
+    <result column="use_times" jdbcType="BIGINT" property="useTimes" />
+    <result column="is_top" jdbcType="CHAR" property="isTop" />
+    <result column="use_amount" jdbcType="BIGINT" property="useAmount" />
+    <result column="recharge_amout" jdbcType="BIGINT" property="rechargeAmout" />
+    <result column="last_use_time" jdbcType="TIMESTAMP" property="lastUseTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, family_id, user_id, join_status, owner, use_times, is_top, use_amount, recharge_amout, 
+    last_use_time, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from family_member_copy
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from family_member_copy
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.firstspringboot.common.vo.FamilyMemberCopy">
+    insert into family_member_copy (id, family_id, user_id, 
+      join_status, owner, use_times, 
+      is_top, use_amount, recharge_amout, 
+      last_use_time, create_time, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{familyId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{joinStatus,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, #{useTimes,jdbcType=BIGINT}, 
+      #{isTop,jdbcType=CHAR}, #{useAmount,jdbcType=BIGINT}, #{rechargeAmout,jdbcType=BIGINT}, 
+      #{lastUseTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.firstspringboot.common.vo.FamilyMemberCopy" keyProperty="id" useGeneratedKeys="true">
+    insert into family_member_copy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="familyId != null">
+        family_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="joinStatus != null">
+        join_status,
+      </if>
+      <if test="owner != null">
+        owner,
+      </if>
+      <if test="useTimes != null">
+        use_times,
+      </if>
+      <if test="isTop != null">
+        is_top,
+      </if>
+      <if test="useAmount != null">
+        use_amount,
+      </if>
+      <if test="rechargeAmout != null">
+        recharge_amout,
+      </if>
+      <if test="lastUseTime != null">
+        last_use_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="familyId != null">
+        #{familyId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="joinStatus != null">
+        #{joinStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="owner != null">
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="useTimes != null">
+        #{useTimes,jdbcType=BIGINT},
+      </if>
+      <if test="isTop != null">
+        #{isTop,jdbcType=CHAR},
+      </if>
+      <if test="useAmount != null">
+        #{useAmount,jdbcType=BIGINT},
+      </if>
+      <if test="rechargeAmout != null">
+        #{rechargeAmout,jdbcType=BIGINT},
+      </if>
+      <if test="lastUseTime != null">
+        #{lastUseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.firstspringboot.common.vo.FamilyMemberCopy">
+    update family_member_copy
+    <set>
+      <if test="familyId != null">
+        family_id = #{familyId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="joinStatus != null">
+        join_status = #{joinStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="owner != null">
+        owner = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="useTimes != null">
+        use_times = #{useTimes,jdbcType=BIGINT},
+      </if>
+      <if test="isTop != null">
+        is_top = #{isTop,jdbcType=CHAR},
+      </if>
+      <if test="useAmount != null">
+        use_amount = #{useAmount,jdbcType=BIGINT},
+      </if>
+      <if test="rechargeAmout != null">
+        recharge_amout = #{rechargeAmout,jdbcType=BIGINT},
+      </if>
+      <if test="lastUseTime != null">
+        last_use_time = #{lastUseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.firstspringboot.common.vo.FamilyMemberCopy">
+    update family_member_copy
+    set family_id = #{familyId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      join_status = #{joinStatus,jdbcType=VARCHAR},
+      owner = #{owner,jdbcType=VARCHAR},
+      use_times = #{useTimes,jdbcType=BIGINT},
+      is_top = #{isTop,jdbcType=CHAR},
+      use_amount = #{useAmount,jdbcType=BIGINT},
+      recharge_amout = #{rechargeAmout,jdbcType=BIGINT},
+      last_use_time = #{lastUseTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+  <select id="selectByPrimaryKeySelective" parameterType="com.example.firstspringboot.common.vo.FamilyMemberCopy" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" /> from family_member_copy
+
+    where family_id = #{familyId,jdbcType=VARCHAR} and user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+
+</mapper>

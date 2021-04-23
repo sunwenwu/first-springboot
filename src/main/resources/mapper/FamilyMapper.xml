@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.firstspringboot.dao.FamilyMapper">
+  <resultMap id="BaseResultMap" type="com.example.firstspringboot.common.vo.Family">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="family_name" jdbcType="VARCHAR" property="familyName" />
+    <result column="family_id" jdbcType="VARCHAR" property="familyId" />
+    <result column="owner_user_id" jdbcType="VARCHAR" property="ownerUserId" />
+    <result column="fam_acct_status" jdbcType="VARCHAR" property="famAcctStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, family_name, family_id, owner_user_id, fam_acct_status, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from family
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from family
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <select id="selectByFamilyIdForLock" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from family
+    where family_id = #{familyId} and fam_acct_status = '1' for update
+  </select>
+
+
+  <insert id="insert" parameterType="com.example.firstspringboot.common.vo.Family">
+    insert into family (id, family_name, family_id, 
+      owner_user_id, fam_acct_status, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{familyName,jdbcType=VARCHAR}, #{familyId,jdbcType=VARCHAR}, 
+      #{ownerUserId,jdbcType=VARCHAR}, #{famAcctStatus,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.firstspringboot.common.vo.Family">
+    insert into family
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="familyName != null">
+        family_name,
+      </if>
+      <if test="familyId != null">
+        family_id,
+      </if>
+      <if test="ownerUserId != null">
+        owner_user_id,
+      </if>
+      <if test="famAcctStatus != null">
+        fam_acct_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="familyName != null">
+        #{familyName,jdbcType=VARCHAR},
+      </if>
+      <if test="familyId != null">
+        #{familyId,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerUserId != null">
+        #{ownerUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="famAcctStatus != null">
+        #{famAcctStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.firstspringboot.common.vo.Family">
+    update family
+    <set>
+      <if test="familyName != null">
+        family_name = #{familyName,jdbcType=VARCHAR},
+      </if>
+      <if test="familyId != null">
+        family_id = #{familyId,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerUserId != null">
+        owner_user_id = #{ownerUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="famAcctStatus != null">
+        fam_acct_status = #{famAcctStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.firstspringboot.common.vo.Family">
+    update family
+    set family_name = #{familyName,jdbcType=VARCHAR},
+      family_id = #{familyId,jdbcType=VARCHAR},
+      owner_user_id = #{ownerUserId,jdbcType=VARCHAR},
+      fam_acct_status = #{famAcctStatus,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
